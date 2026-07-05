@@ -63,6 +63,12 @@ This project demonstrates a **production-ready data platform** for a modern taxi
 
 ### System Overview
 
+![NYC Taxi Data Engineering Platform Architecture](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/NYC%20Taxi%20Data%20Engineering%20Plateform.png)
+
+*Complete end-to-end architecture showing data flow from ingestion through orchestration, transformation, and delivery to stakeholders*
+
+### Architecture Diagram (Conceptual)
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │           NYC TAXI DATA ENGINEERING PLATFORM                │
@@ -82,21 +88,21 @@ This project demonstrates a **production-ready data platform** for a modern taxi
                     │ (dbt run & test) │
                     └─────────┬────────┘
                               │
-            ┌─────────────────┼─────────────────┐
-            │                 │                 │
-        ┌───▼───┐         ┌───▼───┐        ┌───▼────┐
-        │BRONZE │         │SILVER │        │ GOLD   │
-        │LAYER  │         │LAYER  │        │LAYER   │
-        └───┬───┘         └───┬───┘        └───┬────┘
-            │                 │                │
-            └─────────────────┼────────────────┘
+                ┌─────────────┼─────────────┐
+                │             │             │
+            ┌───▼───┐     ┌───▼───┐    ┌───▼────┐
+            │BRONZE │     │SILVER │    │ GOLD   │
+            │LAYER  │     │LAYER  │    │LAYER   │
+            └───┬───┘     └───┬───┘    └───┬────┘
+                │             │            │
+                └─────────────┼────────────┘
                               │
-            ┌─────────────────┼─────────────────┐
-            │                 │                 │
-        ┌───▼────┐        ┌───▼────┐      ┌───▼────┐
-        │POWER BI│        │FastAPI │      │SLACK   │
-        │(Dashb.)│        │(API)   │      │(Alerts)│
-        └────────┘        └────────┘      └────────┘
+                ┌─────────────┼─────────────┐
+                │             │             │
+            ┌───▼────┐    ┌───▼────┐  ┌───▼────┐
+            │POWER BI│    │FastAPI │  │SLACK   │
+            │(Dashb.)│    │(API)   │  │(Alerts)│
+            └────────┘    └────────┘  └────────┘
 ```
 
 ### Medallion Architecture
@@ -111,6 +117,10 @@ The platform uses the **Medallion Architecture** pattern for data organization:
 
 ### Data Model (Star Schema)
 
+![Star Schema ER Diagram](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/data_star_model.png)
+
+*Dimensional Star Schema with fact tables (fct_trips, fct_daily_metrics) and dimension tables (dim_date, dim_pickup_location, dim_dropoff_location, dim_payment_method, dim_vendor)*
+
 The Gold layer implements a dimensional Star Schema with:
 
 - **Fact Tables:**
@@ -123,8 +133,6 @@ The Gold layer implements a dimensional Star Schema with:
   - `dim_dropoff_location` - Dropoff zones
   - `dim_payment_method` - Payment types
   - `dim_vendor` - Taxi vendors
-
-*See `assets/data_star_model.png` for the complete ER diagram*
 
 ---
 
@@ -177,20 +185,27 @@ The Gold layer implements a dimensional Star Schema with:
 The project includes 4 specialized Power BI dashboards, each designed for different stakeholders:
 
 #### 1. 📈 Executive Pulse
+
 **Audience:** C-Suite, Executive Leadership
+
+![Executive Pulse Dashboard](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/Executive%20Pulse%20dashboard.png)
 
 **Key Metrics:**
 - Year-over-Year (YoY) revenue growth
 - Total trips and revenue KPIs
 - High-level trend analysis
 - Market performance scorecard
+- Interactive tooltips for granular details
 
 **Use Case:** Executive briefings, board presentations
 
 ---
 
 #### 2. 🚗 Operations & Traffic
+
 **Audience:** Fleet Managers, Operations Teams
+
+![Operations & Traffic Dashboard](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/Op%C3%A9rations%20%26%20Trafic%20dashboard.png)
 
 **Key Metrics:**
 - Filled map visualization of trip hotspots
@@ -199,12 +214,15 @@ The project includes 4 specialized Power BI dashboards, each designed for differ
 - Peak hour analysis
 - Vehicle utilization rates
 
-**Use Case:** Route optimization, fleet scheduling
+**Use Case:** Route optimization, fleet scheduling, geographic analysis
 
 ---
 
 #### 3. 💰 Financial Performance
+
 **Audience:** Finance Department, Accounting
+
+![Financial Performance Dashboard](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/Financial%20Performance%20%26%20Spending%20Patterns%20dashboard.png)
 
 **Key Metrics:**
 - Payment method adoption (Cash vs. Card)
@@ -213,12 +231,15 @@ The project includes 4 specialized Power BI dashboards, each designed for differ
 - Revenue by payment type
 - Customer spend patterns
 
-**Use Case:** Revenue forecasting, payment strategy
+**Use Case:** Revenue forecasting, payment strategy, financial analysis
 
 ---
 
 #### 4. 🔍 Data Quality Monitor
+
 **Audience:** Data Engineering Team
+
+![Data Quality Report Dashboard](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/Data%20Quality%20Report%20dashboard.png)
 
 **Key Metrics:**
 - Pipeline health status
@@ -227,9 +248,13 @@ The project includes 4 specialized Power BI dashboards, each designed for differ
 - Data freshness SLAs
 - Error rate trends
 
-**Use Case:** Pipeline monitoring, SLA tracking
+**Use Case:** Pipeline monitoring, SLA tracking, data governance
 
-### Interactive Features
+---
+
+#### Interactive Features
+
+![Tooltip Example](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/Tooltip%20dashboard.png)
 
 - **Tooltips:** Hover over charts for granular details (Executive Pulse dashboard)
 - **Slicers:** Filter by date, location, payment method
@@ -246,7 +271,15 @@ The project includes 4 specialized Power BI dashboards, each designed for differ
 
 The entire pipeline is orchestrated using **Apache Airflow** via Astro CLI.
 
+#### Airflow DAG UI Overview
+
+![Airflow DAGs UI](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/airflow_dags_ui_airflow.png)
+
+*Visual representation of all DAGs in the Airflow UI showing pipeline status and dependencies*
+
 #### Main Pipeline DAG: `main_dag`
+
+![Main DAG Graph](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/main_dag_graph.png)
 
 Handles the daily end-to-end workflow:
 
@@ -269,6 +302,8 @@ SUCCESS
 
 #### Static Dimensions DAG: `static_dimensions_dag`
 
+![Static Dimensions DAG](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/static_dimensions_dag.png)
+
 Manages slowly-changing dimensions:
 
 ```
@@ -288,6 +323,8 @@ SUCCESS
 
 #### Alerting DAG: `alerting_dag`
 
+![Slack DAG](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/slack_dag.png)
+
 Monitors data quality and sends Slack notifications:
 
 ```
@@ -300,6 +337,12 @@ check_revenue_at_risk
 
 **Schedule:** Daily (after main DAG completes)  
 **Alert Threshold:** Revenue at Risk > $10,000
+
+### Airflow Configuration
+
+![Airflow Variables](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/airflow_variables.png)
+
+*Airflow UI showing configuration variables for alert thresholds, data freshness SLAs, and parallel DAG runs*
 
 ### Airflow UI Access
 
@@ -339,6 +382,11 @@ curl "http://localhost:8000/metrics/daily?date=2024-01-15&borough=Manhattan"
 ```
 
 Example Response:
+
+![FastAPI Response Example](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/fast_api_response.png)
+
+*FastAPI returning JSON metrics with trip statistics, revenue, and payment breakdown*
+
 ```json
 {
   "date": "2024-01-15",
@@ -416,6 +464,10 @@ Invalid Trip Criteria:
 
 ### Slack Alert Message Example
 
+![Slack Alert Message](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/slack_alert_message.png)
+
+*Real Slack notification showing data quality alerts with Revenue at Risk breakdown and actionable insights*
+
 ```
 🚨 DATA QUALITY ALERT
 
@@ -471,6 +523,20 @@ Contact: data-engineering-team
 - Conditional task logic in dbt models
 
 ### Results
+
+#### Before Optimization
+
+![Pipeline Duration Before](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/runing_duration_before.png)
+
+*Pipeline execution time before optimization: 45 minutes*
+
+#### After Optimization
+
+![Pipeline Duration After](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/runing_duration_after.png)
+
+*Pipeline execution time after optimization: 12 minutes*
+
+#### Performance Improvements
 
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
@@ -672,10 +738,20 @@ modern-data-stack-nyc-taxi-1.0-stable/
 │   ├── NYC%20Taxi%20Data%20Engineering%20Plateform.png  # Architecture diagram
 │   ├── main_dag_graph.png           # DAG visualization
 │   ├── Executive%20Pulse%20dashboard.png
-│   ├── Operations%20%26%20Traffic%20dashboard.png
-│   ├── Financial%20Performance%20dashboard.png
+│   ├── Opérations%20%26%20Trafic%20dashboard.png
+│   ├── Financial%20Performance%20%26%20Spending%20Patterns%20dashboard.png
 │   ├── Data%20Quality%20Report%20dashboard.png
-│   └── [other images]
+│   ├── Tooltip%20dashboard.png
+│   ├── airflow_variables.png
+│   ├── airflow_dags_ui_airflow.png
+│   ├── fast_api_response.png
+│   ├── slack_alert_message.png
+│   ├── slack_dag.png
+│   ├── static_dimensions_dag.png
+│   ├── runing_duration_before.png
+│   ├── runing_duration_after.png
+│   ├── agg_power_bi.png
+│   └── nyc_project_dashboard.pbit
 │
 ├── .env.example                      # Example environment variables
 ├── docker-compose.yml                # Airflow + PostgreSQL (Astro CLI managed)
@@ -772,6 +848,6 @@ flake8 dags/ api/
 
 **Star ⭐ this repo if you find it useful!**
 
-**Last Updated:** January 2025 | **Version:** 1.0-stable
+**Last Updated:** July 2026 | **Version:** 1.0-stable
 
 </div>
