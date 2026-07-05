@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: bronze_data
+    description: "Raw data ingested into bronze layer."
+    schema: bronze
+    tables:
+      - name: bronze_taxi_trips
+      - name: taxi_zone_lookup_data

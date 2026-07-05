@@ -1,0 +1,22 @@
+
+services:
+  # PostgreSQL pour dbt (base de données de travail)
+  postgres-dbt:
+    image: postgres:14
+    container_name: postgres-dbt
+    environment:
+      POSTGRES_USER: dbt_user
+      POSTGRES_PASSWORD: dbt_password
+      POSTGRES_DB: dwh_db
+    ports:
+      - "5434:5432"  
+    volumes:
+      - postgres-dbt-data:/var/lib/postgresql/data
+    networks:
+      - airflow
+
+volumes:
+  postgres-dbt-data:
+
+networks:
+  airflow:
