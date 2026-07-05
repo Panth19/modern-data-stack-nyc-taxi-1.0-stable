@@ -63,7 +63,7 @@ This project demonstrates a **production-ready data platform** for a modern taxi
 
 ### System Overview
 
-![NYC Taxi Data Engineering Platform Architecture](https://raw.githubusercontent.com/Panth19/modern-data-stack-nyc-taxi-1.0-stable/main/assets/NYC%20Taxi%20Data%20Engineering%20Plateform.png)
+
 
 *Complete end-to-end architecture showing data flow from ingestion through orchestration, transformation, and delivery to stakeholders*
 
