@@ -603,5 +603,5 @@ flake8 dags/ api/
 **Project Maintainer:** Panth19
 
 - **GitHub:** [@Panth19](https://github.com/Panth19)
-- **LinkedIn:** [Panth19](https://www.linkedin.com/in/panth19/)
+
 
